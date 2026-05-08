@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Alertas</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+
+<style>
+  body{
+    margin:0;
+    background:#f4f7f1;
+    font-family:'Inter',sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+  }
+
+  .phone{
+    width:375px;
+    height:812px;
+    background:#FCFDFB;
+    border-radius:40px;
+    overflow:hidden;
+    position:relative;
+    box-shadow:
+      0 10px 30px rgba(0,0,0,0.08),
+      0 2px 10px rgba(0,0,0,0.04);
+  }
+
+  .top-bar{
+    padding:56px 24px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .icon-btn{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#1A461A;
+    transition:.2s;
+    cursor:pointer;
+  }
+
+  .icon-btn:hover{
+    background:#eef5e9;
+  }
+
+  .title{
+    font-size:20px;
+    font-weight:800;
+    color:#1A461A;
+  }
+
+  .section-title{
+    padding:0 24px;
+    margin-bottom:20px;
+    font-size:18px;
+    font-weight:700;
+    color:#1A461A;
+  }
+
+  .content{
+    padding:0 24px 130px;
+    overflow-y:auto;
+    height:calc(100% - 160px);
+  }
+
+  .alert-card{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:18px;
+    border-radius:22px;
+    margin-bottom:18px;
+    cursor:pointer;
+    transition:.2s;
+    box-shadow:0 4px 12px rgba(0,0,0,0.04);
+  }
+
+  .alert-card:hover{
+    transform:translateY(-2px);
+  }
+
+  .green{
+    background:#EAF6E3;
+  }
+
+  .yellow{
+    background:#FDEAC5;
+  }
+
+  .red{
+    background:#F9DBDD;
+  }
+
+  .card-icon{
+    width:54px;
+    height:54px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+
+  .green .card-icon{
+    border:2px solid #4D8F3A;
+    color:#4D8F3A;
+  }
+
+  .yellow .card-icon{
+    background:#F4A82F;
+    color:white;
+  }
+
+  .red .card-icon{
+    background:#DF5356;
+    color:white;
+  }
+
+  .card-title{
+    font-size:16px;
+    font-weight:700;
+    margin-bottom:4px;
+    color:#1A1A1A;
+  }
+
+  .card-sub{
+    font-size:13px;
+    font-weight:600;
+    opacity:.8;
+    margin-bottom:2px;
+  }
+
+  .card-date{
+    font-size:12px;
+    opacity:.6;
+  }
+
+  .bottom-nav{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:92px;
+    background:white;
+    border-top:1px solid #e7ece3;
+    display:flex;
+    justify-content:space-around;
+    align-items:flex-start;
+    padding-top:12px;
+    border-top-left-radius:28px;
+    border-top-right-radius:28px;
+    box-shadow:0 -6px 24px rgba(0,0,0,0.05);
+  }
+
+  .nav-btn{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    border:none;
+    background:none;
+    cursor:pointer;
+    color:#7b9676;
+    transition:.2s;
+    width:70px;
+  }
+
+  .nav-btn.active{
+    color:#387D39;
+  }
+
+  .nav-btn:hover{
+    color:#387D39;
+  }
+
+  .nav-text{
+    font-size:11px;
+    font-weight:600;
+  }
+
+  ::-webkit-scrollbar{
+    display:none;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="phone">
+
+  <!-- HEADER -->
+  <div class="top-bar">
+
+    <button class="icon-btn" data-action="back">
+      <iconify-icon icon="lucide:chevron-left" width="28"></iconify-icon>
+    </button>
+
+    <div class="title">
+      Alertas
+    </div>
+
+    <button class="icon-btn" data-action="notifications">
+      <iconify-icon icon="lucide:bell" width="24"></iconify-icon>
+    </button>
+
+  </div>
+
+  <!-- TITLE -->
+  <div class="section-title">
+    Produtos próximos do vencimento
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- CARD -->
+    <div class="alert-card green" data-product="Leite Integral">
+
+      <div class="card-icon">
+        <iconify-icon icon="lucide:package" width="24"></iconify-icon>
+      </div>
+
+      <div style="flex:1;">
+        <div class="card-title">Leite Integral</div>
+        <div class="card-sub">Vence em 5 dias</div>
+        <div class="card-date">15/05/2025</div>
+      </div>
+
+      <iconify-icon icon="lucide:chevron-right" width="20"></iconify-icon>
+
+    </div>
+
+    <!-- CARD -->
+    <div class="alert-card yellow" data-product="Queijo Mussarela">
+
+      <div class="card-icon">
+        <iconify-icon icon="lucide:package" width="24"></iconify-icon>
+      </div>
+
+      <div style="flex:1;">
+        <div class="card-title">Queijo Mussarela</div>
+        <div class="card-sub">Vence amanhã</div>
+        <div class="card-date">10/05/2025</div>
+      </div>
+
+      <iconify-icon icon="lucide:chevron-right" width="20"></iconify-icon>
+
+    </div>
+
+    <!-- CARD -->
+    <div class="alert-card red" data-product="Iogurte Natural">
+
+      <div class="card-icon">
+        <iconify-icon icon="lucide:package" width="24"></iconify-icon>
+      </div>
+
+      <div style="flex:1;">
+        <div class="card-title">Iogurte Natural</div>
+        <div class="card-sub">Vence hoje</div>
+        <div class="card-date">09/05/2025</div>
+      </div>
+
+      <iconify-icon icon="lucide:chevron-right" width="20"></iconify-icon>
+
+    </div>
+
+  </div>
+
+  <!-- MENU -->
+  <div class="bottom-nav">
+
+    <button class="nav-btn" data-page="despensa">
+      <iconify-icon icon="lucide:home" width="24"></iconify-icon>
+      <span class="nav-text">Despensa</span>
+    </button>
+
+    <button class="nav-btn active" data-page="alertas">
+      <iconify-icon icon="lucide:bell" width="24"></iconify-icon>
+      <span class="nav-text">Alertas</span>
+    </button>
+
+    <button class="nav-btn" data-page="receitas">
+      <iconify-icon icon="lucide:utensils" width="24"></iconify-icon>
+      <span class="nav-text">Receitas</span>
+    </button>
+
+    <button class="nav-btn" data-page="perfil">
+      <iconify-icon icon="lucide:user" width="24"></iconify-icon>
+      <span class="nav-text">Perfil</span>
+    </button>
+
+  </div>
+
+</div>
+
+<script>
+
+  // VOLTAR
+  document.querySelector("[data-action='back']")
+  .addEventListener("click", () => {
+    window.history.back();
+  });
+
+  // NOTIFICAÇÕES
+  document.querySelector("[data-action='notifications']")
+  .addEventListener("click", () => {
+    alert("Abrindo notificações...");
+  });
+
+  // CARDS
+  document.querySelectorAll(".alert-card")
+  .forEach(card => {
+
+    card.addEventListener("click", () => {
+
+      const produto = card.dataset.product;
+
+      alert("Abrindo detalhes de: " + produto);
+
+    });
+
+  });
+
+  // MENU
+  document.querySelectorAll(".nav-btn")
+  .forEach(btn => {
+
+    btn.addEventListener("click", () => {
+
+      // remove ativo
+      document.querySelectorAll(".nav-btn")
+      .forEach(b => b.classList.remove("active"));
+
+      // adiciona ativo
+      btn.classList.add("active");
+
+      // página
+      const page = btn.dataset.page;
+
+      switch(page){
+
+        case "despensa":
+          alert("Abrindo Despensa");
+          break;
+
+        case "alertas":
+          alert("Você já está em Alertas");
+          break;
+
+        case "receitas":
+          alert("Abrindo Receitas");
+          break;
+
+        case "perfil":
+          alert("Abrindo Perfil");
+          break;
+
+      }
+
+    });
+
+  });
+
+</script>
+
+</body>
+</html>
