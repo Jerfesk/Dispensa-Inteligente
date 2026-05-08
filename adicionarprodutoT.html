@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Adicionar Produto</title>
+
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+  />
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:"Inter", sans-serif;
+    }
+
+    body{
+      background:#f8fbf4;
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:375px;
+      min-height:100vh;
+      background:#f8fbf4;
+      position:relative;
+      padding-bottom:120px;
+    }
+
+    /* HEADER */
+
+    .header{
+      display:flex;
+      align-items:center;
+      padding:56px 24px 24px;
+      position:relative;
+    }
+
+    .back-btn{
+      width:42px;
+      height:42px;
+      border:none;
+      background:white;
+      border-radius:50%;
+      cursor:pointer;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      font-size:24px;
+      color:#1a461a;
+
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
+
+      transition:0.2s;
+      z-index:2;
+    }
+
+    .back-btn:hover{
+      background:#edf5e8;
+    }
+
+    .title{
+      position:absolute;
+      left:0;
+      width:100%;
+      text-align:center;
+
+      font-size:17px;
+      font-weight:600;
+      color:#1a461a;
+
+      pointer-events:none;
+    }
+
+    /* FORM */
+
+    .form{
+      padding:40px 24px 0;
+    }
+
+    .field{
+      margin-bottom:24px;
+    }
+
+    .label{
+      display:block;
+      margin-bottom:8px;
+
+      font-size:13px;
+      font-weight:500;
+
+      color:#3e5c3e;
+    }
+
+    .input{
+      width:100%;
+      height:54px;
+
+      border:1px solid #dfe6dc;
+      border-radius:12px;
+
+      background:white;
+
+      padding:0 16px;
+
+      font-size:15px;
+      color:#1a461a;
+
+      outline:none;
+
+      transition:0.2s;
+    }
+
+    .input:focus{
+      border:2px solid #387d39;
+    }
+
+    /* BOTÃO SALVAR */
+
+    .save-container{
+      position:fixed;
+      bottom:20px;
+      width:375px;
+      padding:0 24px;
+    }
+
+    .save-btn{
+      width:100%;
+      height:56px;
+
+      border:none;
+      border-radius:12px;
+
+      background:#387d39;
+      color:white;
+
+      font-size:16px;
+      font-weight:600;
+
+      cursor:pointer;
+
+      transition:0.2s;
+    }
+
+    .save-btn:hover{
+      background:#2c622c;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+
+      <button id="btnVoltar" class="back-btn">
+        ←
+      </button>
+
+      <div class="title">
+        Adicionar Produto
+      </div>
+
+    </div>
+
+    <!-- FORMULÁRIO -->
+    <div class="form">
+
+      <!-- NOME -->
+      <div class="field">
+
+        <label class="label">
+          Nome do produto
+        </label>
+
+        <input
+          type="text"
+          id="nomeProduto"
+          class="input"
+          value="Leite Integral"
+        />
+
+      </div>
+
+      <!-- DATA -->
+      <div class="field">
+
+        <label class="label">
+          Data de validade
+        </label>
+
+        <input
+          type="date"
+          id="dataValidade"
+          class="input"
+          value="2025-05-15"
+        />
+
+      </div>
+
+    </div>
+
+    <!-- BOTÃO -->
+    <div class="save-container">
+
+      <button id="btnSalvar" class="save-btn">
+        Salvar Produto
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    // BOTÃO VOLTAR
+    document
+      .getElementById("btnVoltar")
+      .onclick = function(){
+
+        if(window.history.length > 1){
+          window.history.back();
+        }else{
+          alert("Não existe página anterior.");
+        }
+      };
+
+
+
+    // BOTÃO SALVAR
+    document
+      .getElementById("btnSalvar")
+      .onclick = function(){
+
+        const nome =
+          document.getElementById("nomeProduto").value;
+
+        const validade =
+          document.getElementById("dataValidade").value;
+
+        alert(
+          "Produto salvo com sucesso!\n\n" +
+          "Nome: " + nome + "\n" +
+          "Validade: " + validade
+        );
+
+        console.log({
+          nome,
+          validade
+        });
+      };
+
+  </script>
+
+</body>
+</html>
