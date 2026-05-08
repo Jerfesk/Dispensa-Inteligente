@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Meu Perfil</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #EEF3E8;
+      font-family: Inter, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .phone {
+      width: 390px;
+      height: 844px;
+      background: #FCFDFB;
+      border-radius: 36px;
+      overflow: hidden;
+      position: relative;
+      box-shadow:
+        0 10px 40px rgba(0,0,0,0.08),
+        0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .scroll-area {
+      height: 100%;
+      overflow-y: auto;
+      padding-bottom: 150px;
+    }
+
+    .scroll-area::-webkit-scrollbar {
+      display: none;
+    }
+
+    .card-shadow {
+      box-shadow: 0 2px 16px rgba(0,0,0,0.03);
+    }
+
+    .nav-shadow {
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.06);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="phone">
+
+  <!-- SCROLL -->
+  <div class="scroll-area">
+
+    <!-- HEADER -->
+    <div class="flex items-center justify-between px-6 pt-14 pb-6">
+
+      <!-- VOLTAR -->
+      <button
+        id="backBtn"
+        class="w-10 h-10 flex items-center justify-center text-[#1A461A]"
+      >
+        <iconify-icon
+          icon="lucide:arrow-left"
+          class="text-[24px]"
+        ></iconify-icon>
+      </button>
+
+      <h1 class="text-[22px] font-bold text-[#1A461A]">
+        Meu Perfil
+      </h1>
+
+      <!-- SETTINGS -->
+      <button
+        id="settingsBtn"
+        class="w-10 h-10 flex items-center justify-center text-[#1A461A]"
+      >
+        <iconify-icon
+          icon="lucide:settings"
+          class="text-[22px]"
+        ></iconify-icon>
+      </button>
+
+    </div>
+
+    <!-- CONTENT -->
+    <div class="px-5">
+
+      <!-- PROFILE CARD -->
+      <div class="bg-white rounded-[28px] p-8 border border-[#EAEFE5] card-shadow">
+
+        <div class="relative w-fit mx-auto mb-5">
+
+          <img
+            src="https://storage.googleapis.com/banani-avatars/avatar/female/25-35/Hispanic/1"
+            class="w-28 h-28 rounded-full object-cover border-4 border-white shadow"
+          />
+
+          <!-- FOTO -->
+          <button
+            id="photoBtn"
+            class="absolute bottom-1 right-1 w-10 h-10 rounded-full bg-[#2F7D32] border-4 border-white flex items-center justify-center text-white shadow"
+          >
+            <iconify-icon
+              icon="lucide:camera"
+              class="text-[18px]"
+            ></iconify-icon>
+          </button>
+
+        </div>
+
+        <div class="text-center">
+
+          <h2 class="text-[20px] font-bold text-black mb-1">
+            Juliana Silva
+          </h2>
+
+          <p class="text-[16px] text-[#3D6D3E]">
+            juliana.silva@email.com
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- MENU -->
+      <div class="bg-white rounded-[28px] overflow-hidden mt-6 border border-[#EAEFE5] card-shadow">
+
+        <!-- NOTIFICAÇÕES -->
+        <button
+          class="menu-btn w-full h-[82px] flex items-center justify-between px-6 border-b border-[#EEF2EB] hover:bg-[#FAFAFA] transition"
+          data-action="Notificações"
+        >
+
+          <div class="flex items-center gap-4">
+
+            <iconify-icon
+              icon="lucide:bell"
+              class="text-[22px] text-[#F4B400]"
+            ></iconify-icon>
+
+            <span class="text-[18px] text-black">
+              Notificações
+            </span>
+
+          </div>
+
+          <iconify-icon
+            icon="lucide:chevron-right"
+            class="text-[20px] text-[#A1A1AA]"
+          ></iconify-icon>
+
+        </button>
+
+        <!-- PREFERÊNCIAS -->
+        <button
+          class="menu-btn w-full h-[82px] flex items-center justify-between px-6 border-b border-[#EEF2EB] hover:bg-[#FAFAFA] transition"
+          data-action="Preferências"
+        >
+
+          <div class="flex items-center gap-4">
+
+            <iconify-icon
+              icon="lucide:settings"
+              class="text-[22px] text-[#555]"
+            ></iconify-icon>
+
+            <span class="text-[18px] text-black">
+              Preferências
+            </span>
+
+          </div>
+
+          <iconify-icon
+            icon="lucide:chevron-right"
+            class="text-[20px] text-[#A1A1AA]"
+          ></iconify-icon>
+
+        </button>
+
+        <!-- MINHA CONTA -->
+        <button
+          class="menu-btn w-full h-[82px] flex items-center justify-between px-6 border-b border-[#EEF2EB] hover:bg-[#FAFAFA] transition"
+          data-action="Minha Conta"
+        >
+
+          <div class="flex items-center gap-4">
+
+            <iconify-icon
+              icon="lucide:user"
+              class="text-[22px] text-[#555]"
+            ></iconify-icon>
+
+            <span class="text-[18px] text-black">
+              Minha Conta
+            </span>
+
+          </div>
+
+          <iconify-icon
+            icon="lucide:chevron-right"
+            class="text-[20px] text-[#A1A1AA]"
+          ></iconify-icon>
+
+        </button>
+
+        <!-- AJUDA -->
+        <button
+          class="menu-btn w-full h-[82px] flex items-center justify-between px-6 border-b border-[#EEF2EB] hover:bg-[#FAFAFA] transition"
+          data-action="Ajuda e Suporte"
+        >
+
+          <div class="flex items-center gap-4">
+
+            <iconify-icon
+              icon="lucide:help-circle"
+              class="text-[22px] text-[#DB4437]"
+            ></iconify-icon>
+
+            <span class="text-[18px] text-black">
+              Ajuda e Suporte
+            </span>
+
+          </div>
+
+          <iconify-icon
+            icon="lucide:chevron-right"
+            class="text-[20px] text-[#A1A1AA]"
+          ></iconify-icon>
+
+        </button>
+
+        <!-- SOBRE -->
+        <button
+          class="menu-btn w-full h-[82px] flex items-center justify-between px-6 hover:bg-[#FAFAFA] transition"
+          data-action="Sobre o App"
+        >
+
+          <div class="flex items-center gap-4">
+
+            <iconify-icon
+              icon="lucide:info"
+              class="text-[22px] text-[#1A73E8]"
+            ></iconify-icon>
+
+            <span class="text-[18px] text-black">
+              Sobre o App
+            </span>
+
+          </div>
+
+          <iconify-icon
+            icon="lucide:chevron-right"
+            class="text-[20px] text-[#A1A1AA]"
+          ></iconify-icon>
+
+        </button>
+
+      </div>
+
+      <!-- LOGOUT -->
+      <div class="mt-8 mb-8">
+
+        <button
+          id="logoutBtn"
+          class="w-full h-[68px] rounded-[24px] border-2 border-[#2F7D32] bg-white text-[#2F7D32] text-[22px] font-semibold flex items-center justify-center gap-3 hover:bg-[#F8FBF5] transition"
+        >
+
+          <iconify-icon
+            icon="lucide:log-out"
+            class="text-[24px]"
+          ></iconify-icon>
+
+          Sair da conta
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- NAVBAR -->
+  <div class="absolute bottom-0 left-0 w-full h-[100px] bg-white border-t border-[#ECECEC] nav-shadow flex justify-around items-center pb-3 rounded-t-[28px]">
+
+    <!-- HOME -->
+    <button
+      class="nav-btn flex flex-col items-center text-[#7B7B7B]"
+      data-nav="Despensa"
+    >
+
+      <iconify-icon
+        icon="lucide:home"
+        class="text-[26px]"
+      ></iconify-icon>
+
+      <span class="text-[13px] mt-1">
+        Despensa
+      </span>
+
+    </button>
+
+    <!-- ALERTAS -->
+    <button
+      class="nav-btn flex flex-col items-center text-[#7B7B7B]"
+      data-nav="Alertas"
+    >
+
+      <iconify-icon
+        icon="lucide:bell"
+        class="text-[26px]"
+      ></iconify-icon>
+
+      <span class="text-[13px] mt-1">
+        Alertas
+      </span>
+
+    </button>
+
+    <!-- RECEITAS -->
+    <button
+      class="nav-btn flex flex-col items-center text-[#7B7B7B]"
+      data-nav="Receitas"
+    >
+
+      <iconify-icon
+        icon="lucide:utensils"
+        class="text-[26px]"
+      ></iconify-icon>
+
+      <span class="text-[13px] mt-1">
+        Receitas
+      </span>
+
+    </button>
+
+    <!-- PERFIL -->
+    <button
+      class="nav-btn flex flex-col items-center text-[#2F7D32]"
+      data-nav="Perfil"
+    >
+
+      <iconify-icon
+        icon="lucide:user"
+        class="text-[26px]"
+      ></iconify-icon>
+
+      <span class="text-[13px] mt-1 font-semibold">
+        Perfil
+      </span>
+
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ICONS -->
+<script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+
+<!-- FUNCIONALIDADE -->
+<script>
+
+  // VOLTAR
+  document.getElementById('backBtn').addEventListener('click', () => {
+    alert('Voltando...');
+  });
+
+  // CONFIGURAÇÕES
+  document.getElementById('settingsBtn').addEventListener('click', () => {
+    alert('Abrindo configurações...');
+  });
+
+  // FOTO
+  document.getElementById('photoBtn').addEventListener('click', () => {
+    alert('Alterar foto de perfil');
+  });
+
+  // MENU
+  const menuButtons = document.querySelectorAll('.menu-btn');
+
+  menuButtons.forEach(button => {
+
+    button.addEventListener('click', () => {
+
+      const action = button.dataset.action;
+
+      alert(`Abrindo ${action}...`);
+
+    });
+
+  });
+
+  // LOGOUT
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+
+    const confirmLogout = confirm('Deseja sair da conta?');
+
+    if(confirmLogout) {
+      alert('Logout realizado!');
+    }
+
+  });
+
+  // NAVBAR
+  const navButtons = document.querySelectorAll('.nav-btn');
+
+  navButtons.forEach(button => {
+
+    button.addEventListener('click', () => {
+
+      const page = button.dataset.nav;
+
+      alert(`Abrindo ${page}...`);
+
+    });
+
+  });
+
+</script>
+
+</body>
+</html>
