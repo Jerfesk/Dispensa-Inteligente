@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sugestões para você</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fcfdfb;
+      margin: 0;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Garante que o botão responda ao toque */
+    .btn-touch {
+      cursor: pointer;
+      pointer-events: auto !important; 
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-touch:active {
+      transform: scale(0.92);
+      opacity: 0.8;
+    }
+
+    .nav-btn { color: #677f64; }
+    .nav-btn.active { color: #387d39; }
+  </style>
+</head>
+
+<body>
+  <div class="relative w-full h-full flex flex-col bg-[#FCFDFB] text-[#1A461A]">
+
+    <div class="absolute top-0 right-0 w-72 h-72 bg-gradient-to-bl from-[#F1F6E9] to-transparent pointer-events-none z-0"></div>
+
+    <header class="px-6 pt-14 pb-6 relative z-10 shrink-0">
+      <div class="flex items-start justify-between">
+        <div>
+          <h1 class="text-[30px] font-extrabold leading-tight tracking-tight mb-2">Sugestões para você</h1>
+          <p class="text-[15px] text-[#677F64] font-medium leading-snug">
+            Receitas feitas com ingredientes<br /> que estão perto do vencimento.
+          </p>
+        </div>
+        <div class="w-14 h-14">
+          <svg viewBox="0 0 100 100" fill="none" class="w-full h-full">
+            <path d="M70 90C70 90 20 70 20 20C20 0 40 -10 60 -10C80 -10 100 10 120 40C120 40 120 90 70 90Z" fill="#75B632" />
+            <path d="M35 100C35 100 -5 80 -5 40C-5 25 10 15 25 15C40 15 55 30 65 50C65 50 65 100 35 100Z" fill="#A8D098" />
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto no-scrollbar px-6 pb-32 relative z-10">
+      
+      <div class="flex bg-white rounded-[24px] overflow-hidden border border-[#F1F6E9] shadow-[0_4px_16px_rgba(0,0,0,0.03)] mb-5">
+        <div class="relative w-[140px] h-[160px] shrink-0">
+          <img src="https://storage.googleapis.com/banani-generated-images/generated-images/67d26c37-4ff6-42bb-9b7e-403fe5c20fd7.jpg" class="w-full h-full object-cover" />
+        </div>
+        <div class="flex flex-col justify-center p-4 flex-1">
+          <h3 class="text-[16px] font-bold leading-tight mb-1">Macarrão ao Molho</h3>
+          <p class="text-[12px] text-[#677F64] mb-4">Pronto em 25 min</p>
+          <button class="btn-touch bg-[#387D39] text-white text-[12px] font-semibold py-2 px-5 rounded-full w-fit" 
+                  onclick="openPage('Receita: Macarrão')">
+            Ver receita
+          </button>
+        </div>
+      </div>
+
+      <div class="flex bg-white rounded-[24px] overflow-hidden border border-[#F1F6E9] shadow-[0_4px_16px_rgba(0,0,0,0.03)] mb-5">
+        <div class="relative w-[140px] h-[160px] shrink-0">
+          <img src="https://storage.googleapis.com/banani-generated-images/generated-images/49064e8f-4735-484c-a699-40150c579e98.jpg" class="w-full h-full object-cover" />
+        </div>
+        <div class="flex flex-col justify-center p-4 flex-1">
+          <h3 class="text-[16px] font-bold leading-tight mb-1">Lasanha de Frigideira</h3>
+          <p class="text-[12px] text-[#677F64] mb-4">Pronto em 30 min</p>
+          <button class="btn-touch bg-[#387D39] text-white text-[12px] font-semibold py-2 px-5 rounded-full w-fit" 
+                  onclick="openPage('Receita: Lasanha')">
+            Ver receita
+          </button>
+        </div>
+      </div>
+
+    </main>
+
+    <nav class="absolute bottom-0 left-0 w-full h-24 bg-white border-t border-[#E2E8F0] rounded-t-[28px] shadow-[0_-4px_24px_rgba(0,0,0,0.1)] flex items-center justify-around px-4 z-[100]">
+      
+      <button class="nav-btn btn-touch flex flex-col items-center gap-1" onclick="openPage('Despensa')">
+        <ion-icon name="home-outline" class="text-[24px]"></ion-icon>
+        <span class="text-[11px] font-medium">Despensa</span>
+      </button>
+
+      <button class="nav-btn btn-touch flex flex-col items-center gap-1" onclick="openPage('Alertas')">
+        <ion-icon name="notifications-outline" class="text-[24px]"></ion-icon>
+        <span class="text-[11px] font-medium">Alertas</span>
+      </button>
+
+      <button class="nav-btn btn-touch active flex flex-col items-center gap-1" onclick="openPage('Receitas')">
+        <ion-icon name="restaurant" class="text-[24px]"></ion-icon>
+        <span class="text-[11px] font-semibold">Receitas</span>
+      </button>
+
+      <button class="nav-btn btn-touch flex flex-col items-center gap-1" onclick="openPage('Perfil')">
+        <ion-icon name="person-outline" class="text-[24px]"></ion-icon>
+        <span class="text-[11px] font-medium">Perfil</span>
+      </button>
+
+    </nav>
+  </div>
+
+  <script>
+    // Função única para testar todos os cliques
+    function openPage(name) {
+      console.log("Clicou em: " + name);
+      alert("Você clicou em: " + name);
+    }
+  </script>
+</body>
+</html>
