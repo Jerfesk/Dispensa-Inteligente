@@ -108,7 +108,7 @@
             <iconify-icon icon="lucide:chef-hat" style="font-size: 40px;"></iconify-icon>
             <p>Digite um ingrediente para<br>ver sugestões de receitas.</p>
         </div>
-        </div>
+    </div>
 
     <nav class="nav-bar">
         <a href="index.html" class="nav-item">
@@ -170,11 +170,13 @@
         dados.forEach(receita => {
             const card = document.createElement('div');
             card.className = 'suggestion-card';
-            // Aqui usamos a função que já existe no seu projeto para gerar os detalhes
-            card.onclick = () => alert("Receita selecionada: " + receita.nome); 
+            
+            // ALTERADO: Agora redireciona enviando o nome da receita de forma segura pela URL
+            card.onclick = () => {
+                window.location.href = `receitaP.html?nome=${encodeURIComponent(receita.nome)}`;
+            }; 
             
             card.innerHTML = `
-                
                 <div class="card-info">
                     <h3>${receita.nome}</h3>
                     <p>⏱️ ${receita.tempo} | 👨‍🍳 Sugestão IA</p>
@@ -188,10 +190,11 @@
         lista.innerHTML = `<p style="color:red; text-align:center;">Erro ao buscar sugestões.<br><small>${error.message}</small></p>`;
     }
 }
-    // Permitir busca ao apertar Enter
-    document.getElementById('input-ingrediente').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') buscarSugestoes();
-    });
+
+// Permitir busca ao apertar Enter
+document.getElementById('input-ingrediente').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') buscarSugestoes();
+});
 </script>
 
 </body>

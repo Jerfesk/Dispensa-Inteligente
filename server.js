@@ -11,18 +11,10 @@ process.env.JWT_SECRET = process.env.JWT_SECRET || 'chave_reserva_para_entrega_1
 
 const app = express();
 app.get('/', (req, res) => {
-res.sendFile(path.join(__dirname, 'public', 'loginP.html'));  //pagina de login/principal
+    res.sendFile(path.join(__dirname, 'public', 'loginP.html'));  //pagina de login/principal
 });
 app.use(express.static('public'));
 app.use(express.json());
-
-// const API_KEY = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : undefined;
-// console.log("CHAVE:", API_KEY); //pelo gpt
-// const JWT_SECRET = process.env.JWT_SECRET || 'sua_chave_secreta_aqui';
-
-// if (!API_KEY) {
-//     console.error("❌ ERRO: GEMINI_API_KEY não encontrada!");
-// }
 
 // --- BANCO DE DADOS ---
 const db = new sqlite3.Database('./estoque.db', (err) => {
@@ -50,14 +42,13 @@ const db = new sqlite3.Database('./estoque.db', (err) => {
 });
 
 // --- MIDDLEWARE DE AUTENTICAÇÃO ---
-// Protege as rotas da API para que apenas usuários logados acessem
 const autenticarToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) return res.status(401).json({ erro: "Acesso negado. Faça login." });
 
-const chaveSecreta = process.env.JWT_SECRET || 'chave_reserva_para_entrega_123';
+    const chaveSecreta = process.env.JWT_SECRET || 'chave_reserva_para_entrega_123';
 
     jwt.verify(token, chaveSecreta, (err, user) => {
         if (err) return res.status(403).json({ erro: "Token inválido ou expirado." });
@@ -68,16 +59,12 @@ const chaveSecreta = process.env.JWT_SECRET || 'chave_reserva_para_entrega_123';
 
 // --- ROTAS DE USUÁRIO (LOGIN/CADASTRO/RESET) ---
 
-// Rota para criar o primeiro usuário (ou novos)
-
 app.post('/api/auth/registrar', async (req, res) => {
-    // Agora desestruturamos também o nome e a data de nascimento do corpo da requisição
     const { nome, email, senha, data_nascimento } = req.body;
 
     try {
         const senhaHash = await bcrypt.hash(senha, 10);
         
-        // Incluímos as novas colunas e os novos valores no comando INSERT
         const sql = `INSERT INTO usuarios (nome, email, senha, data_nascimento) VALUES (?, ?, ?, ?)`;
         const params = [nome, email, senhaHash, data_nascimento];
 
@@ -93,7 +80,6 @@ app.post('/api/auth/registrar', async (req, res) => {
     }
 });
 
-// Rota de Login
 app.post('/api/auth/login', (req, res) => {
     const { email, senha } = req.body;
     db.get(`SELECT * FROM usuarios WHERE email = ?`, [email], async (err, user) => {
@@ -109,16 +95,13 @@ app.post('/api/auth/login', (req, res) => {
     });
 });
 
-// Esqueci a Senha (Gera token e enviaria e-mail)
 app.post('/api/auth/esqueci-senha', (req, res) => {
     const { email } = req.body;
-    const tokenReset = Math.random().toString(36).substring(2, 10); // Token simples para exemplo
+    const tokenReset = Math.random().toString(36).substring(2, 10);
 
     db.run(`UPDATE usuarios SET resetToken = ? WHERE email = ?`, [tokenReset, email], function(err) {
         if (err || this.changes === 0) return res.status(404).json({ erro: "E-mail não encontrado." });
 
-        // Configuração do Transportador de E-mail (Exemplo com Gmail)
-        // Nota: Requer "Senha de App" configurada no Google
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -144,7 +127,6 @@ app.post('/api/auth/esqueci-senha', (req, res) => {
     });
 });
 
-// --- ROTA PARA DEFINIR A NOVA SENHA (PASSO FINAL) ---
 app.post('/api/auth/redefinir-senha', async (req, res) => {
     const { email, token, novaSenha } = req.body;
 
@@ -152,7 +134,6 @@ app.post('/api/auth/redefinir-senha', async (req, res) => {
         return res.status(400).json({ erro: "Todos os campos são obrigatórios." });
     }
 
-    // Verifica se o e-mail e o código (token) batem com o que está no banco
     db.get(`SELECT * FROM usuarios WHERE email = ? AND resetToken = ?`, [email, token], async (err, user) => {
         if (err) {
             return res.status(500).json({ erro: "Erro ao consultar o banco de dados." });
@@ -163,10 +144,8 @@ app.post('/api/auth/redefinir-senha', async (req, res) => {
         }
 
         try {
-            // Cria o hash da nova senha
             const novaSenhaHash = await bcrypt.hash(novaSenha, 10);
 
-            // Atualiza a senha e limpa o token de reset para que não seja usado de novo
             db.run(`UPDATE usuarios SET senha = ?, resetToken = NULL WHERE email = ?`, [novaSenhaHash, email], function(err) {
                 if (err) {
                     return res.status(500).json({ erro: "Erro ao atualizar a senha no banco." });
@@ -182,13 +161,12 @@ app.post('/api/auth/redefinir-senha', async (req, res) => {
 // --- ROTAS DE PRODUTOS (PROTEGIDAS) ---
 
 app.get('/api/produto/:codigo', autenticarToken, async (req, res) => {
-    // Limpa o código recebido
     const codigo = req.params.codigo.replace(/\D/g, "");
 
     try {
         const url = `https://br.openfoodfacts.org/api/v0/product/${codigo}.json`;
         const response = await axios.get(url, {
-            headers: { 'User-Agent': 'MinhaDespensaApp - Node - Versao1.0' } // IMPORTANTE
+            headers: { 'User-Agent': 'MinhaDespensaApp - Node - Versao1.0' }
         });
 
         if (response.data && response.data.status === 1) {
@@ -243,31 +221,32 @@ const groq = new OpenAI({
     baseURL: "https://api.groq.com/openai/v1"
 });
 
+/* ALTERADO: Ajustado o prompt JSON para incluir tempo, dificuldade e porcoes que seu HTML precisa */
 app.get('/receita/:produto', autenticarToken, async (req, res) => {
-
     const produto = req.params.produto;
 
     try {
-
         const resposta = await groq.chat.completions.create({
             model: "llama-3.3-70b-versatile",
             messages: [
                 {
                     role: "user",
                     content:
-`Crie uma receita simples com ${produto}.
-Responda apenas JSON:
+`Crie uma receita detalhada com o prato ou ingrediente: ${produto}.
+Responda APENAS em formato JSON seguindo estritamente este modelo:
 {
-  "nome": "",
-  "ingredientes": [],
-  "preparo": []
+  "nome": "Nome da receita",
+  "tempo": "25 min",
+  "dificuldade": "Fácil",
+  "porcoes": "2",
+  "ingredientes": ["item 1", "item 2"],
+  "preparo": ["passo 1", "passo 2"]
 }`
                 }
             ]
         });
 
-        let textoIA =
-resposta.choices[0].message.content;
+        let textoIA = resposta.choices[0].message.content;
 
         textoIA = textoIA
             .replace(/```json/g, "")
@@ -275,20 +254,15 @@ resposta.choices[0].message.content;
             .trim();
 
         const receita = JSON.parse(textoIA);
-
         res.json(receita);
 
     } catch (error) {
-
         console.log(error);
-
-        res.status(500).json({
-            erro: "Erro na IA"
-        });
+        res.status(500).json({ erro: "Erro na IA" });
     }
 });
 
-// --- ROTA DE SUGESTÕES DE RECEITAS (NOVA) ---
+// --- ROTA DE SUGESTÕES DE RECEITAS ---
 app.get('/api/sugestoes', autenticarToken, async (req, res) => {
     const { ingrediente } = req.query;
     if (!ingrediente) return res.status(400).json({ erro: "Ingrediente vazio" });
@@ -306,7 +280,6 @@ app.get('/api/sugestoes', autenticarToken, async (req, res) => {
 
         let textoIA = resposta.choices[0].message.content;
 
-        // LIMPEZA SEGURA: Pega apenas o que está entre [ e ]
         const inicio = textoIA.indexOf('[');
         const fim = textoIA.lastIndexOf(']') + 1;
         
@@ -323,9 +296,9 @@ app.get('/api/sugestoes', autenticarToken, async (req, res) => {
         res.status(500).json({ erro: "Erro ao processar receitas" });
     }
 });
+
 // Rota para buscar dados do perfil do usuário logado
 app.get('/api/usuario/meu-perfil', autenticarToken, (req, res) => {
-    // req.user.id vem do token decodificado no middleware autenticarToken
     const userId = req.user.id;
 
     db.get(`SELECT nome, email, data_nascimento FROM usuarios WHERE id = ?`, [userId], (err, user) => {
@@ -336,9 +309,13 @@ app.get('/api/usuario/meu-perfil', autenticarToken, (req, res) => {
         if (!user) {
             return res.status(404).json({ erro: "Usuário não encontrado." });
         }
-        // Retorna os dados para o frontend
         res.json(user);
     });
+});
+
+/* ADICIONADO: Rota para servir a sua página receitaP.html de forma segura */
+app.get('/receitaP.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'receitaP.html'));
 });
 
 const PORT = 3000;

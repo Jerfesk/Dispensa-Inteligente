@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Receita - Macarrão ao Molho</title>
+    <title>Visualizar Receita</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -45,7 +45,7 @@
         .content {
             flex: 1;
             overflow-y: auto;
-            padding-bottom: 80px; /* Espaço para o menu inferior */
+            padding-bottom: 80px; /* Espaço para o botão inferior */
         }
 
         .header-image {
@@ -114,43 +114,41 @@
             font-weight: bold;
         }
 
-        /* Menu Inferior Fixo */
-        .bottom-nav {
+        /* NOVO: Área inferior contendo apenas o botão de voltar */
+        .bottom-action {
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 70px;
+            height: 75px;
             background: var(--white);
             border-top: 1px solid #eee;
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             align-items: center;
-            padding-bottom: 10px;
+            padding: 10px 20px 15px;
         }
 
-        .nav-item {
-            background: none;
+        .btn-voltar {
+            width: 100%;
+            height: 48px;
+            background: var(--primary);
+            color: white;
             border: none;
-            color: #888;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            font-size: 11px;
-            transition: 0.2s;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+            transition: background 0.2s;
         }
 
-        .nav-item:active {
-            transform: scale(0.9);
-        }
-
-        .nav-item.active {
-            color: var(--primary);
-        }
-
-        .nav-icon {
-            font-size: 20px;
-            margin-bottom: 4px;
+        .btn-voltar:active {
+            transform: scale(0.98);
+            background: #2d632e;
         }
     </style>
 </head>
@@ -158,54 +156,115 @@
 
 <div class="app-container">
     <div class="content">
-        <img src="https://images.unsplash.com/photo-1546549032-9571cd6b27df?q=80&w=500" alt="Macarrão" class="header-image">
+        <img id="img-receita" src="https://images.unsplash.com/photo-1546549032-9571cd6b27df?q=80&w=500" alt="Imagem da Receita" class="header-image">
         
         <div class="recipe-body">
-            <h1 class="recipe-title">Macarrão ao Molho com Queijo</h1>
+            <h1 id="titulo-receita" class="recipe-title">Carregando receita...</h1>
             
             <div class="info-bar">
-                <span>⏱️ 25 min</span>
-                <span>😊 Fácil</span>
-                <span>👥 2 porções</span>
+                <span id="tempo-receita">⏱️ -- min</span>
+                <span id="dificuldade-receita">😊 --</span>
+                <span id="porcoes-receita">👥 -- porções</span>
             </div>
 
             <h2 class="section-title">Ingredientes</h2>
-            <div class="list-item"><span class="check-icon">✓</span> 200g de macarrão</div>
-            <div class="list-item"><span class="check-icon">✓</span> 1 xícara de molho de tomate</div>
-            <div class="list-item"><span class="check-icon">✓</span> 100g de queijo mussarela</div>
-            <div class="list-item"><span class="check-icon">✓</span> 1 colher de sopa de azeite</div>
+            <div id="container-ingredientes">
+                <p style="color: #888;">Buscando os melhores ingredientes...</p>
+            </div>
 
             <h2 class="section-title">Modo de preparo</h2>
-            <div class="list-item">
-                <span class="step-number">1</span>
-                <p>Cozinhe o macarrão conforme as instruções da embalagem.</p>
-            </div>
-            <div class="list-item">
-                <span class="step-number">2</span>
-                <p>Em uma panela, aqueça o azeite e adicione o molho.</p>
+            <div id="container-passos">
+                <p style="color: #888;">Preparando o fogão...</p>
             </div>
         </div>
     </div>
 
-    <nav class="bottom-nav">
-        <button class="nav-item">
-            <span class="nav-icon">🏠</span>
-            <span>Despensa</span>
+    <div class="bottom-action">
+        <button class="btn-voltar" onclick="voltarParaBusca()">
+            <span>⬅️</span> Voltar para as sugestões
         </button>
-        <button class="nav-item">
-            <span class="nav-icon">🔔</span>
-            <span>Alertas</span>
-        </button>
-        <button class="nav-item active">
-            <span class="nav-icon">🍴</span>
-            <span>Receitas</span>
-        </button>
-        <button class="nav-item">
-            <span class="nav-icon">👤</span>
-            <span>Perfil</span>
-        </button>
-    </nav>
+    </div>
 </div>
+
+<script>
+    // 1. Pega o nome da receita enviado na URL de forma segura
+    const urlParams = new URLSearchParams(window.location.search);
+    let nomeReceita = urlParams.get('nome');
+
+    // Fallback caso a string venha crua sem tratamento correto do navegador
+    if (!nomeReceita && window.location.href.includes('nome=')) {
+        nomeReceita = window.location.href.split('nome=')[1];
+    }
+
+    const token = localStorage.getItem('token'); 
+
+    if (!nomeReceita) {
+        alert('Nenhuma receita selecionada!');
+        voltarParaBusca();
+    } else {
+        nomeReceita = decodeURIComponent(nomeReceita);
+        carregarDetalhesDaReceita();
+    }
+
+    // Função para voltar para a tela anterior
+    function voltarParaBusca() {
+        // Redireciona de volta para a sua página de busca (sugestReceitaT.html)
+        window.location.href = 'sugestReceitaT.html';
+    }
+
+    // 2. Busca os dados reais com a IA do seu backend
+    function carregarDetalhesDaReceita() {
+        fetch(`/receita/${encodeURIComponent(nomeReceita)}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Erro na requisição ou token inválido.');
+            return response.json();
+        })
+        .then(receita => {
+            // Renderiza as informações básicas
+            document.getElementById('titulo-receita').innerText = receita.nome || nomeReceita;
+            document.getElementById('tempo-receita').innerText = `⏱️ ${receita.tempo || '25 min'}`;
+            document.getElementById('dificuldade-receita').innerText = `😊 ${receita.dificuldade || 'Fácil'}`;
+            document.getElementById('porcoes-receita').innerText = `👥 ${receita.porcoes || '2 porções'}`;
+
+            // Renderiza Ingredientes
+            const containerIngredientes = document.getElementById('container-ingredientes');
+            containerIngredientes.innerHTML = '';
+            if (receita.ingredientes && receita.ingredientes.length > 0) {
+                receita.ingredientes.forEach(ing => {
+                    containerIngredientes.innerHTML += `<div class="list-item"><span class="check-icon">✓</span> ${ing}</div>`;
+                });
+            } else {
+                containerIngredientes.innerHTML = '<p>Nenhum ingrediente listado pela IA.</p>';
+            }
+
+            // Renderiza Modo de Preparo (Usando .preparo que seu backend retorna)
+            const containerPassos = document.getElementById('container-passos');
+            containerPassos.innerHTML = '';
+            if (receita.preparo && receita.preparo.length > 0) {
+                receita.preparo.forEach((passo, index) => {
+                    containerPassos.innerHTML += `
+                        <div class="list-item">
+                            <span class="step-number">${index + 1}</span>
+                            <p>${passo}</p>
+                        </div>`;
+                });
+            } else {
+                containerPassos.innerHTML = '<p>Não foi possível estruturar o modo de preparo.</p>';
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            alert('Erro ao carregar a receita. Retornando para a tela de buscas.');
+            voltarParaBusca();
+        });
+    }
+</script>
 
 </body>
 </html>
