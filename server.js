@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
-
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'chave_reserva_para_entrega_123';
 
 const app = express();
 app.get('/', (req, res) => {
@@ -57,7 +57,9 @@ const autenticarToken = (req, res, next) => {
 
     if (!token) return res.status(401).json({ erro: "Acesso negado. Faça login." });
 
-    jwt.verify(token, JWT_SECRET, (err, user) => {
+const chaveSecreta = process.env.JWT_SECRET || 'chave_reserva_para_entrega_123';
+
+    jwt.verify(token, chaveSecreta, (err, user) => {
         if (err) return res.status(403).json({ erro: "Token inválido ou expirado." });
         req.user = user;
         next();
@@ -101,7 +103,8 @@ app.post('/api/auth/login', (req, res) => {
         const senhaValida = await bcrypt.compare(senha, user.senha);
         if (!senhaValida) return res.status(401).json({ erro: "Senha incorreta." });
 
-        const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '2h' });
+        const chaveSecreta = process.env.JWT_SECRET || 'chave_reserva_para_entrega_123';
+        const token = jwt.sign({ id: user.id, email: user.email }, chaveSecreta, { expiresIn: '2h' });
         res.json({ sucesso: true, token });
     });
 });
